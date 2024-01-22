@@ -76,7 +76,7 @@ def rules():
     for rule_render, rule_rect in zip(rules_render, rules_rect):
         screen.blit(rule_render, rule_rect)
 
-    iceberg = pygame.image.load("icebergg.png").convert()
+    iceberg = pygame.image.load("icebergs.png").convert()
     imageSize = (1000, 200)
     iceberg = pygame.transform.scale(iceberg, imageSize)
     screen.blit(iceberg, (0, height - 200))
