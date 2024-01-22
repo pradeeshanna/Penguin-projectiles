@@ -59,7 +59,6 @@ def rules():
     game_font2 = pygame.font.SysFont("Andale Mono", 20)
 
     title_text = "Rules"
-
     rules_text = [
         "AIM: Try to hit the launch target by varying launch angle and speed.",
         "SCORING: 5 points for every bullseye, 1 point if the penguin lands on the target.",
@@ -80,7 +79,10 @@ def rules():
     imageSize = (1000, 200)
     iceberg = pygame.transform.scale(iceberg, imageSize)
     screen.blit(iceberg, (0, height - 200))
-
+    
+    
+    start_button = Button("Back", 70, 500, None)
+    start_button.draw()  # Corrected line
     pygame.display.flip()
     pygame.display.update()
     while True:
@@ -88,12 +90,13 @@ def rules():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                # Exit the rules page when a key is pressed or the mouse is clicked
-                return
-
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if start_button.rect.collidepoint(event.pos):   
+                        return 
         pygame.display.flip()
         pygame.time.Clock().tick(30)
+
 
 
 
