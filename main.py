@@ -1,6 +1,7 @@
 import pygame
 import math
 import sys
+import game
 
 #try and add title look at line 14 onwards DONE
 #try and make prettier - import image in pygame window, colours DONE
@@ -21,6 +22,8 @@ def end():
     pygame.quit()
     sys.exit()
 
+def playGame():
+    game.main()
 
 
 class Button:
@@ -101,7 +104,7 @@ def rules():
 
 
 
-start_button = Button("Start", ((width//2)-100) , 210, None)
+start_button = Button("Start", ((width//2)-100) , 210, playGame)
 rules_button = Button("Rules", ((width//2)-100), 280, rules)
 leaderboard_button = Button("Leaderboard", ((width//2)-100), 350, None)
 end_button = Button("End", ((width//2)-100), 420, end)
