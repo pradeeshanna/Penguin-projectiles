@@ -1,6 +1,7 @@
 import pygame
 import math
 import sys
+import game
 
 #try and add title look at line 14 onwards DONE
 #try and make prettier - import image in pygame window, colours DONE
@@ -21,6 +22,8 @@ def end():
     pygame.quit()
     sys.exit()
 
+def playGame():
+    game.main()
 
 
 class Button:
@@ -49,7 +52,7 @@ menu_font = pygame.font.Font(None, 35)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Praddy's Peculiar Penguins...")
 
-penguin = pygame.image.load("/Users/pradeeshanna/Documents/computing/Peculiar penguins/penguin.png").convert()
+penguin = pygame.image.load("penguin.png").convert()
 
 
 
@@ -57,33 +60,51 @@ def rules():
     screen.fill(dark_blue)
     game_font1 = pygame.font.SysFont("Andale Mono", 30)
     game_font2 = pygame.font.SysFont("Andale Mono", 20)
-    game_text1 = game_font1.render("RULES", True, (255,255,255))
-    game_text2 = game_font2.render("AIM: Try to hit the launch target by varying launch angle and speed.", True, (255,255,255))
-    game_text3 = game_font2.render("SCORING: 5 points for every bullseye, 1 point if the penguin lands on the target.", True, (255,255,255))
-    game_text4 = game_font2.render("Good Luck!!!", True, (255,255,255))
-    game_rect1 = game_text1.get_rect(center = (width//2, 140))
-    game_rect2 = game_text2.get_rect(center = (width//2, 200))
-    game_rect3 = game_text3.get_rect(center = (width//2, 260))
-    game_rect4 = game_text4.get_rect(center = (width//2, 320))
-    screen.blit(game_text1, game_rect1) 
-    screen.blit(game_text2, game_rect2)
-    screen.blit(game_text3, game_rect3)
-    screen.blit(game_text4, game_rect4)
 
-    iceberg = pygame.image.load("/Users/pradeeshanna/Documents/computing/Peculiar penguins/icebergs.png").convert()
+    title_text = "Rules"
+    rules_text = [
+        "AIM: Try to hit the launch target by varying launch angle and speed.",
+        "SCORING: 5 points for every bullseye, 1 point if the penguin lands on the target.",
+        "Good Luck!!!"
+    ]
 
+    title_render = game_font1.render(title_text, True, white)
+    rules_render = [game_font2.render(rule, True, white) for rule in rules_text]
 
-    screen.blit(iceberg,(0,height-150))
-    imageSize = (1000,150)
-    iceberg = pygame.transform.scale(iceberg,imageSize)
+    title_rect = title_render.get_rect(center=[width // 2, 120])
+    rules_rect = [rule.get_rect(center=[width // 2, 200 + i * 70]) for i, rule in enumerate(rules_render)]
+
+    screen.blit(title_render, title_rect)
+    for rule_render, rule_rect in zip(rules_render, rules_rect):
+        screen.blit(rule_render, rule_rect)
+
+    iceberg = pygame.image.load("icebergs.png").convert()
+    imageSize = (1000, 200)
+    iceberg = pygame.transform.scale(iceberg, imageSize)
+    screen.blit(iceberg, (0, height - 200))
+    
+    
+    start_button = Button("Back", 70, 500, None)
+    start_button.draw()  # Corrected line
     pygame.display.flip()
-
     pygame.display.update()
-    pygame.time.delay(5000)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if start_button.rect.collidepoint(event.pos):   
+                        return 
+        pygame.display.flip()
+        pygame.time.Clock().tick(30)
 
 
 
-start_button = Button("Start", ((width//2)-100) , 210, None)
+
+
+start_button = Button("Start", ((width//2)-100) , 210, playGame)
 rules_button = Button("Rules", ((width//2)-100), 280, rules)
 leaderboard_button = Button("Leaderboard", ((width//2)-100), 350, None)
 end_button = Button("End", ((width//2)-100), 420, end)
